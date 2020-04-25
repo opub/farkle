@@ -8,21 +8,26 @@ ul {
     padding-left: 30px;
 }
 
-/* .board-row:after {
-    clear: both;
-    content: "";
-    display: table;
-} */
+.board-row {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    display: flex;
+}
 
-.status {
-    margin-bottom: 10px;
+.score-row {
+    margin-left: 20px;
+    margin-top: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    height: 34px;
+    padding: 0;
 }
 
 .dice,
 .held {
     background: #fff;
     border: 1px solid #999;
-    float: left;
     font-size: 24px;
     font-weight: bold;
     line-height: 34px;
@@ -47,10 +52,10 @@ ul {
     background: #ddd;
 }
 
-.action {
+.action,
+.inaction {
     background: #fff;
     border: 1px solid #999;
-    float: left;
     font-size: 22px;
     font-weight: bold;
     line-height: 34px;
@@ -63,11 +68,12 @@ ul {
     cursor: pointer;
 }
 
+.inaction {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
 .game {
     display: flex;
     flex-direction: row;
-}
-
-.game-info {
-    margin-left: 20px;
 }
