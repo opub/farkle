@@ -3,6 +3,11 @@ body {
     margin: 20px;
 }
 
+.game {
+    display: flex;
+    flex-direction: row;
+}
+
 .title {
     font: 32px "Century Gothic", Futura, sans-serif;
     font-weight: bold;
@@ -16,6 +21,23 @@ body {
     display: flex;
 }
 
+.dice,
+.held {
+    color: #070;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.held {
+    color: #700;
+}
+
+.dice:hover {
+    color: #0c0;
+}
+
 .score-row {
     margin-left: 20px;
     margin-top: 20px;
@@ -26,52 +48,50 @@ body {
     padding: 0;
 }
 
-.dice,
-.held {
-    background: #fff;
-    border: 1px solid #999;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: 10px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 34px;
-    cursor: pointer;
-}
-
-.held {
-    background: #bbb;
-}
-
-.dice:hover {
-    background: #ddd;
+.df-solid-small-dot-d6-1,
+.df-solid-small-dot-d6-2,
+.df-solid-small-dot-d6-3,
+.df-solid-small-dot-d6-4,
+.df-solid-small-dot-d6-5,
+.df-solid-small-dot-d6-6 {
+    font-size: 48px;
 }
 
 .action,
 .inaction {
-    background: #fff;
-    border: 1px solid #999;
-    font-size: 22px;
+    border-radius: 6px;
+    display: inline-block;
+    font: 20px "Century Gothic", Futura, sans-serif;
     font-weight: bold;
-    line-height: 34px;
-    height: 34px;
+    padding: 4px 30px;
+    text-decoration: none;
+    margin-top: 5px;
     margin-left: 20px;
-    margin-top: -1px;
-    padding: 0;
-    text-align: center;
-    width: 90px;
+    height: 32px;
+    line-height: 32px;
+}
+
+.action {
+    background-color: #3d94f6;
+    border: 1px solid #337fed;
+    color: #ffffff;
+    text-shadow: 0px 1px 0px #1570cd;
     cursor: pointer;
 }
 
 .inaction {
-    background: #ccc;
+    background-color:#ededed;
+	border:1px solid #dcdcdc;
+	color:#777777;
+    text-shadow:0px 1px 0px #ffffff;
     cursor: not-allowed;
 }
 
-.game {
-    display: flex;
-    flex-direction: row;
+.action:hover {
+    background-color: #1e62d0;
+}
+
+.action:active {
+    position: relative;
+    top: 1px;
 }

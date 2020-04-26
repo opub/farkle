@@ -6,9 +6,9 @@ import './index.css';
 class Dice extends React.Component {
     render() {
         return (
-            <button className={this.props.held ? 'held' : "dice"} onClick={this.props.onClick}>
-                {this.props.value}
-            </button>
+            <div className={this.props.held ? 'held' : "dice"} onClick={this.props.onClick}>
+                <i className={"df-solid-small-dot-d6-" + this.props.value}></i>
+            </div>
         );
     }
 }
@@ -64,7 +64,7 @@ class Board extends React.Component {
         // reset held if all held
         let allHeld = true;
         let held = this.state.held.slice();
-        if(!this.state.farkle) {
+        if (!this.state.farkle) {
             held.forEach(item => {
                 allHeld = allHeld && item;
             });
