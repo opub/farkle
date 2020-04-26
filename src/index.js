@@ -138,9 +138,11 @@ class Board extends React.Component {
                         onClick={() => { if (this.state.rollPoints + this.state.turnPoints >= 500) this.handleBank() }}>Bank</div>
                 </div>
 
-                <div className="score-row">Roll Points: {this.state.farkle ? "FARKLE!" : this.state.rollPoints}</div>
-                <div className="score-row">Turn Points: {this.state.turnPoints}</div>
-                <div className="score-row">Total Points: {this.state.totalPoints}</div>
+                <div className="score-row">
+                    <div className="score">{this.state.farkle ? "" : "Roll Points:"} <b>{this.state.farkle ? "FARKLE!" : this.state.rollPoints}</b></div>
+                    <div className="score">Turn Points: <b>{this.state.turnPoints}</b></div>
+                    <div className="score">Total Points: <b>{this.state.totalPoints}</b></div>
+                </div>
             </div>
         );
     }
