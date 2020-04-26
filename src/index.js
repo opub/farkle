@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { checkBoard } from './logic.js';
+import { checkBoard, getCombos } from './logic.js';
 import './index.css';
 
 class Dice extends React.Component {
@@ -13,10 +13,40 @@ class Dice extends React.Component {
     }
 }
 
+class ComboRows extends React.Component {
+    render() {
+        return (
+            getCombos(this.props.combos).map(combo => this.renderCombo(combo))
+        );
+    }
+
+    renderCombo(combo) {
+        return (
+            <ComboRow
+                key={combo.key}
+                name={combo.name}
+                points={combo.points}
+            />
+        )
+    }
+}
+
+class ComboRow extends React.Component {
+    render() {
+        return (
+            <div className="combo">
+                <div className="combo-name">{this.props.name}</div>
+                <div className="combo-points">{this.props.points}</div>
+            </div>
+        );
+    }
+}
+
 class Board extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            combos: "classic",
             dice: Array(6).fill(0),
             held: Array(6).fill(false),
             turn: [],
@@ -27,6 +57,7 @@ class Board extends React.Component {
             farkle: false,
             clicked: false
         };
+        this.handleChangeCombos = this.handleChangeCombos.bind(this);
     }
 
     componentDidMount() {
@@ -56,7 +87,7 @@ class Board extends React.Component {
         }
 
         // calculate results
-        const results = checkBoard(turn);
+        const results = checkBoard(turn, this.state.combos);
         this.setState({
             rollPoints: results.points,
             held: held,
@@ -92,7 +123,7 @@ class Board extends React.Component {
         }
 
         // calculate results
-        const results = checkBoard(rolled);
+        const results = checkBoard(rolled, this.state.combos);
         this.setState({
             rollPoints: 0,
             turnPoints: results.farkle ? 0 : this.state.rollPoints + this.state.turnPoints,
@@ -128,6 +159,21 @@ class Board extends React.Component {
         )
     }
 
+    handleChangeCombos(event) {
+        this.setState({ 
+            combos: event.target.value,
+            dice: Array(6).fill(0),
+            held: Array(6).fill(false),
+            turn: [],
+            allowed: [],
+            rollPoints: 0,
+            turnPoints: 0,
+            totalPoints: 0,
+            farkle: false,
+            clicked: false
+         }, () => this.handleRoll());
+    }
+
     render() {
         return (
             <div>
@@ -150,6 +196,17 @@ class Board extends React.Component {
                     <div className="score">Turn Points: <b>{this.state.turnPoints}</b></div>
                     <div className="score">Total Points: <b>{this.state.totalPoints}</b></div>
                 </div>
+
+                <div className="detail-row">
+                    <div className="score-row">
+                        <b>Scoring</b>
+                        <select value={this.state.combos} onChange={this.handleChangeCombos} className="combolist">
+                            <option value="classic">Classic</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </div>
+                    <ComboRows combos={this.state.combos} />
+                </div>
             </div>
         );
     }
@@ -169,8 +226,6 @@ class Game extends React.Component {
         );
     }
 }
-
-// ========================================
 
 ReactDOM.render(
     <Game />,

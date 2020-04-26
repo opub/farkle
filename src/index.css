@@ -97,3 +97,31 @@ body {
     position: relative;
     top: 1px;
 }
+
+.detail-row {
+    margin-top: 20px;
+    width: 300px;
+    display: inline-block;
+}
+
+.combo {
+    font: 20px "Century Gothic", Futura, sans-serif;
+    border-bottom: 1px solid #777777;
+}
+
+.combo-name {
+    text-align: left;
+    display: inline-block;
+    width: 220px;
+}
+
+.combo-points {
+    text-align: left;
+    display: inline-block;
+    width: 50px;
+}
+
+.combolist {
+    font: 18px "Century Gothic", Futura, sans-serif;
+    margin-left: 20px;
+}
