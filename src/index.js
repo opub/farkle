@@ -20,6 +20,7 @@ class Board extends React.Component {
             dice: Array(6).fill(0),
             held: Array(6).fill(false),
             turn: [],
+            allowed: [],
             rollPoints: 0,
             turnPoints: 0,
             totalPoints: 0,
@@ -35,16 +36,22 @@ class Board extends React.Component {
     handleClick(i) {
         console.log("handleClick", i);
 
+        const die = this.state.dice[i];
         const turn = this.state.turn.slice();
-        let held = this.state.held.slice();
+        const held = this.state.held.slice();
+        const allowed = this.state.allowed.slice();
+        const turnID = turn.indexOf(die);
+        const allowID = allowed.indexOf(die);
 
-        // handle clicking 
-        const index = turn.indexOf(this.state.dice[i]);
-        if (held[i] && index > -1) {
-            turn.splice(index, 1);
+        if (held[i] && turnID > -1) {
+            // release hold
+            turn.splice(turnID, 1);
+            allowed.push(die);
             held[i] = false;
-        } else if (!held[i]) {
-            turn.push(this.state.dice[i]);
+        } else if (!held[i] && allowID > -1) {
+            // hold
+            turn.push(die);
+            allowed.splice(allowID, 1);
             held[i] = true;
         }
 
@@ -54,6 +61,7 @@ class Board extends React.Component {
             rollPoints: results.points,
             held: held,
             turn: turn,
+            allowed: allowed,
             clicked: results.points > 0
         });
     }
@@ -92,6 +100,7 @@ class Board extends React.Component {
             dice: dice,
             held: held,
             turn: [],
+            allowed: results.possible,
             clicked: false
         });
     }
@@ -120,8 +129,6 @@ class Board extends React.Component {
     }
 
     render() {
-        // const status = this.state.farkle ? "FARKLE!" : "Roll Points: " + this.state.rollPoints + ", Turn Points: " + this.state.turnPoints;
-
         return (
             <div>
                 <div className="board-row">
