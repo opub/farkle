@@ -3,9 +3,11 @@ body {
     margin: 20px;
 }
 
-ol,
-ul {
-    padding-left: 30px;
+.title {
+    font: 32px "Century Gothic", Futura, sans-serif;
+    font-weight: bold;
+    margin: 20px;
+    text-align: center;
 }
 
 .board-row {
@@ -40,15 +42,11 @@ ul {
     cursor: pointer;
 }
 
-.dice:focus {
-    outline: none;
-}
-
 .held {
     background: #bbb;
 }
 
-.kbd-navigation .dice:focus {
+.dice:hover {
     background: #ddd;
 }
 

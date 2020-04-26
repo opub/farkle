@@ -19,6 +19,7 @@ class Board extends React.Component {
         this.state = {
             dice: Array(6).fill(0),
             held: Array(6).fill(false),
+            turn: [],
             rollPoints: 0,
             turnPoints: 0,
             totalPoints: 0,
@@ -33,9 +34,28 @@ class Board extends React.Component {
 
     handleClick(i) {
         console.log("handleClick", i);
-        const held = this.state.held.slice();
-        held[i] = true;
-        this.setState({ held: held, clicked: true });
+
+        const turn = this.state.turn.slice();
+        let held = this.state.held.slice();
+
+        // handle clicking 
+        const index = turn.indexOf(this.state.dice[i]);
+        if (held[i] && index > -1) {
+            turn.splice(index, 1);
+            held[i] = false;
+        } else if (!held[i]) {
+            turn.push(this.state.dice[i]);
+            held[i] = true;
+        }
+
+        // calculate results
+        const results = checkBoard(turn);
+        this.setState({
+            rollPoints: results.points,
+            held: held,
+            turn: turn,
+            clicked: results.points > 0
+        });
     }
 
     handleRoll() {
@@ -44,10 +64,12 @@ class Board extends React.Component {
         // reset held if all held
         let allHeld = true;
         let held = this.state.held.slice();
-        held.forEach(item => {
-            allHeld = allHeld && item;
-        });
-        if(allHeld) {
+        if(!this.state.farkle) {
+            held.forEach(item => {
+                allHeld = allHeld && item;
+            });
+        }
+        if (allHeld) {
             held = Array(6).fill(false);
         }
 
@@ -63,26 +85,27 @@ class Board extends React.Component {
 
         // calculate results
         const results = checkBoard(rolled);
-        if(results.farkle) {
-            held = Array(6).fill(false);
-        }
         this.setState({
-            rollPoints: results.farkle ? 0 : results.points,
-            turnPoints: results.farkle ? 0 : this.state.turnPoints + results.points,
+            rollPoints: 0,
+            turnPoints: results.farkle ? 0 : this.state.rollPoints + this.state.turnPoints,
             farkle: results.farkle,
             dice: dice,
             held: held,
+            turn: [],
             clicked: false
         });
     }
 
     handleBank() {
+        console.log("handleBank");
+
         this.setState({
-            totalPoints: this.state.totalPoints + this.state.turnPoints,
+            totalPoints: this.state.totalPoints + this.state.rollPoints + this.state.turnPoints,
             rollPoints: 0,
             turnPoints: 0,
             farkle: false,
-            held: Array(6).fill(false)
+            held: Array(6).fill(false),
+            turn: [],
         }, () => this.handleRoll());
     }
 
@@ -109,11 +132,13 @@ class Board extends React.Component {
                     {this.renderDice(4)}
                     {this.renderDice(5)}
 
-                    <div className={this.state.clicked || this.state.farkle ? "action" : "inaction"} onClick={() => { if(this.state.clicked || this.state.farkle) this.handleRoll() }}>Roll</div>
-                    <div className={this.state.turnPoints >= 500 ? "action" : "inaction"} onClick={() => { if(this.state.turnPoints >= 500) this.handleBank() }}>Bank</div>
+                    <div className={this.state.clicked || this.state.farkle ? "action" : "inaction"}
+                        onClick={() => { if (this.state.clicked || this.state.farkle) this.handleRoll() }}>Roll</div>
+                    <div className={this.state.rollPoints + this.state.turnPoints >= 500 ? "action" : "inaction"}
+                        onClick={() => { if (this.state.rollPoints + this.state.turnPoints >= 500) this.handleBank() }}>Bank</div>
                 </div>
 
-                <div className="score-row">Roll Points: {this.state.rollPoints}</div>
+                <div className="score-row">Roll Points: {this.state.farkle ? "FARKLE!" : this.state.rollPoints}</div>
                 <div className="score-row">Turn Points: {this.state.turnPoints}</div>
                 <div className="score-row">Total Points: {this.state.totalPoints}</div>
             </div>
@@ -124,9 +149,12 @@ class Board extends React.Component {
 class Game extends React.Component {
     render() {
         return (
-            <div className="game">
-                <div className="game-board">
-                    <Board />
+            <div>
+                <div className="title">Farkle</div>
+                <div className="game">
+                    <div className="game-board">
+                        <Board />
+                    </div>
                 </div>
             </div>
         );
